@@ -1,0 +1,140 @@
+.header-region {
+    height: 60px;
+    display: flex;
+
+    .logo {
+        margin-left: 30px;
+        float: left;
+        height: 60px;
+        display: inline-block;
+
+        img {
+            margin-top: 14px;
+            height: 40px;
+        }
+    }
+
+    .navigation {
+        list-style: none;
+        float: left;
+        padding: 0;
+        margin: 0;
+        margin-left: 90px;
+        flex: 1;
+
+        li {
+            float: left;
+            height: 60px;
+
+            a {
+                padding: 0 10px;
+                display: block;
+                line-height: 60px;
+                color: #767676;
+                letter-spacing: 1px;
+                margin-left: 24px;
+                margin-right: 24px;
+                -webkit-transition: color 0.5s;
+                transition: color 0.5s;
+                text-decoration: none;
+                font-size: 13px;
+
+                &:hover {
+                    color: #197cd9;
+                }
+            }
+        }
+    }
+
+    .login-region {
+        height: 60px;
+        color: #666;
+        position: relative;
+        margin-right: 30px;
+
+        .wrap {
+            height: 60px;
+            
+            &.login:hover {
+                .login-menu {
+                    display: block;
+                }
+            }
+
+            .placeholder {
+                cursor: pointer;
+                height: 60px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+
+                .photo {
+                    display: inline-block;
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                }
+
+                .name {
+                    display: inline-block;
+                    padding-left: 5px;
+                    padding-right: 18px;
+                    line-height: 36px;
+                    position: relative;
+                
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        border: 4px solid transparent;
+                        border-top-color: #ccc;
+                        top: 17px;
+                        right: 4px;
+                    }
+                }
+            }
+
+            .login-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                z-index: 9;
+
+                ul {
+                    float: left;
+                    background-color: white;
+                    width: 100px;
+                    border: 1px solid #ddd;
+                    border-top: none;
+                    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+                    padding-top: 6px;
+                    padding-bottom: 6px;
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        border: 3px solid transparent;
+                        border-top-color: white;
+                    }           
+
+                    li {
+                        text-align: center;
+                        height: 30px;
+                        line-height: 30px;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: #f5f5f5;
+                        }
+
+                        &.seperator {
+                            height: 1px;
+                            background-color: #d3d3de;
+                            pointer-events: none;
+                            line-height: 1px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
