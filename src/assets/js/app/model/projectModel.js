@@ -1,4 +1,4 @@
-define(['vendor/jquery', 'vendor/jsencrypt', 'vendor/jszip', 'app/config/config', './userModel'], function($1, JSEncrypt, JSZip, config, userModel) {
+define(['vendor/jquery', 'vendor/jsencrypt', 'vendor/jszip', 'app/util/cast', 'app/config/config', './userModel'], function($1, JSEncrypt, JSZip, cast, config, userModel) {
 
 	function list(type) {
 		var promise = $.Deferred();
@@ -36,18 +36,7 @@ define(['vendor/jquery', 'vendor/jsencrypt', 'vendor/jszip', 'app/config/config'
 			return promise;
 		}
 
-		if(type != "scratch2") {
-			setTimeout(_ => promise.reject(), 10);
-			return promise;
-		}
-
-		var zip = new JSZip();
-		var relativePath = getProjectRelativePath(name, type);
-		if(type == "scratch2") {
-			zip.file(relativePath, data);
-		}
-
-		zip.generateAsync({type:"blob"}).then(content => {
+		zip(name, type, data).then(content => {
 		    $.ajax({
 		    	type: "POST",
 		    	url: config.url.projectSync + "/upload",
@@ -82,17 +71,15 @@ define(['vendor/jquery', 'vendor/jsencrypt', 'vendor/jszip', 'app/config/config'
 		$.ajax({
 			type: "POST",
 			url: config.url.projectSync + "/download",
-			data: $.extend({name: name, type: type}, sign)
+			data: $.extend({name: name, type: type}, sign),
+			xhr: _ => {
+				var xhr = new window.XMLHttpRequest();
+				xhr.responseType = 'arraybuffer';
+				return xhr;
+			}
 		}).then(result => {
-			var zip = new JSZip();
-			var relativePath = getProjectRelativePath(name, type, true);
-			zip.loadAsync(result, {base64: true}).then(_ => {
-				zip.file(relativePath).async().then(content => {
-					console.dir(content);
-					promise.resolve(content);
-				}, err => {
-					promise.reject(err);
-				})
+			unzip(name, type, result).then(data => {
+				promise.resolve(data);
 			}, err => {
 				promise.reject(err);
 			});
@@ -101,16 +88,6 @@ define(['vendor/jquery', 'vendor/jsencrypt', 'vendor/jszip', 'app/config/config'
 		});
 
 		return promise;
-	}
-
-	function base64ToArrayBuffer(base64) {
-	    var binary_string =  window.atob(base64);
-	    var len = binary_string.length;
-	    var bytes = new Uint8Array( len );
-	    for (var i = 0; i < len; i++)        {
-	        bytes[i] = binary_string.charCodeAt(i);
-	    }
-	    return bytes.buffer;
 	}
 
 	function remove(name, type) {
@@ -139,6 +116,54 @@ define(['vendor/jquery', 'vendor/jsencrypt', 'vendor/jszip', 'app/config/config'
 		return promise;
 	}
 
+	function zip(name, type, data) {
+		var promise = $.Deferred();
+
+		var archive = new JSZip();
+		var relativePath = getProjectRelativePath(name, type);
+		if(type == "edu" || type == "ide") {
+			archive.file(`${relativePath}/project.json`, JSON.stringify(data));
+			archive.file(`${relativePath}/${name}.ino`, data.project_data.code);
+		} else if(type == "scratch2") {
+			archive.file(relativePath, cast.base64ToArrayBuffer(data));
+		} else if(type == "scratch3") {
+			archive.file(relativePath, data);
+		}
+
+		archive.generateAsync({type:"arraybuffer"}).then(content => {
+		    promise.resolve(content);
+		}, err => {
+			promise.reject(err);
+		});
+
+		return promise;
+	}
+
+	function unzip(name, type, data) {
+		var promise = $.Deferred();
+
+		var archive = new JSZip();
+		var relativePath = getProjectRelativePath(name, type, true);
+		archive.loadAsync(data).then(_ => {
+			archive.file(relativePath).async(type == "scratch2" ? "base64" : "string").then(content => {
+				if(type == "edu") {
+					try {
+						content = JSON.parse(content);
+					} catch(ex) {
+						content = {};
+					}
+				}
+				promise.resolve(content);
+			}, err => {
+				promise.reject(err);
+			})
+		}, err => {
+			promise.reject(err);
+		});
+
+		return promise;
+	}
+
 	function getSign() {
 		var id =userModel.getUserId();
 		if(!id) {
@@ -160,8 +185,10 @@ define(['vendor/jquery', 'vendor/jsencrypt', 'vendor/jszip', 'app/config/config'
 		var relativePath
 		switch(type) {
 			case "edu":
-			case "ide":
 				relativePath = flag ? `${name}/project.json` : name
+				break;
+			case "ide":
+				relativePath = flag ? `${name}/{name}.ino` : name
 				break
 			case "scratch2":
 				relativePath = `${name}.sb2`
@@ -179,5 +206,8 @@ define(['vendor/jquery', 'vendor/jsencrypt', 'vendor/jszip', 'app/config/config'
 		remove: remove,
 		download: download,
 		upload: upload,
+		zip: zip,
+		unzip: unzip,
+		getProjectRelativePath: getProjectRelativePath,
 	}
 })

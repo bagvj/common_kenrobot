@@ -37,7 +37,8 @@ define(['vendor/jquery', 'vendor/lodash', 'vendor/perfect-scrollbar', 'app/util/
 	}
 
 	function update() {
-		projectModel.list(kenrobot.viewType).then(list => {
+		var viewType = kenrobot.viewType
+		kenrobot.postMessage("app:projectList", viewType).then(list => {
 			list = _.sortBy(list, ["type", "modify_time"]);
 			list.reverse().forEach(projectData => {
 				var uid = util.uuid(6);
@@ -87,15 +88,7 @@ define(['vendor/jquery', 'vendor/lodash', 'vendor/perfect-scrollbar', 'app/util/
 		var type = li.data("type");
 
 		setTimeout(_ => {
-			projectModel.download(name, type).then(data => {
-				console.dir(data);
-				kenrobot.trigger("project", "open-by", name, type, data);
-			}, err => {
-				util.message({
-					text: "打开失败",
-					type: "error",
-				});
-			})
+			kenrobot.trigger("project", "open-by", name, type);
 		}, 500);
 		
 		dialogWin.find(".x-dialog-close").trigger("click");
@@ -163,7 +156,7 @@ define(['vendor/jquery', 'vendor/lodash', 'vendor/perfect-scrollbar', 'app/util/
 	}
 
 	function deleteProject(name, type) {
-		projectModel.remove(name, type).then(() => {
+		kenrobot.postMessage("app:projectDelete", name, type).then(() => {
 			onDeleteProjectSuccess(name, type);
 			util.message(`删除项目“${name}”成功`);
 		}, err => {

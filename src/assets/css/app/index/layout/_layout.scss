@@ -63,4 +63,12 @@ html, body {
 	.message-layer {
 		z-index: 999;
 	}
+
+	.hidden-layer {
+		overflow: hidden;
+
+		.open-file {
+			display: none;
+		}
+	}
 }

@@ -13,6 +13,7 @@ define(['vendor/jquery'], function($) {
 		var promise = $.Deferred()
 		var callback = registeredEvents[name]
 		if(!callback) {
+			console.log(`Unhandled message: ${name}`)
 			setTimeout(_ => promise.reject(), 10)
 			return promise
 		}

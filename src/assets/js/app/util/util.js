@@ -307,7 +307,7 @@ define(['vendor/jquery'], function() {
 			}, delay);
 		}
 	}
-
+	
 	return {
 		message: message,
 		confirm: confirm,
