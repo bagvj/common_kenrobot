@@ -55,6 +55,10 @@ gulp.task('clean-html', _ => {
 	])
 })
 
+gulp.task('clean-dist', _ => {
+	return del(DIST)
+})
+
 gulp.task('clean-scratch2', _ => {
 	return del(DIST + 'scratch2')
 })
@@ -142,7 +146,7 @@ gulp.task('pack-scratch3', ['clean-scratch3'], _ => {
 		.pipe(gulp.dest(DIST + "scratch3"))
 })
 
-gulp.task('pack-replace', _ => {
+gulp.task('pack-replace', callback => {
 	if(args.with) {
 		var name = args.with
 		var indexPath = DIST + "index.html"
@@ -150,13 +154,22 @@ gulp.task('pack-replace', _ => {
 		var reg = /data-iframe-src=".*"/g
 		fs.writeFileSync(indexPath, content.replace(reg, `data-iframe-src="${name}/index.html"`))
 	}
+	callback()
 })
 
-gulp.task('pack', ['pack-html', 'pack-image', 'pack-font', 'pack-js', 'pack-css'], _ => {
+gulp.task('pack', ['pack-html', 'pack-image', 'pack-font', 'pack-js', 'pack-css'])
+
+// 默认任务
+gulp.task('default', ['pack'], _ => {
 	if(args.with) {
-		return runSequence(`pack-${args.with}`, 'pack-replace')
+		var tasks = [`pack-${args.with}`, 'pack-replace']
+		args.publish && tasks.push("publish")
+		return runSequence.apply(this, tasks)
 	}
 })
 
-// 默认任务
-gulp.task('default', ['pack'])
+gulp.task('publish', _ => {
+	var name = args.with
+	return gulp.src(DIST + "**/*")
+		.pipe(gulp.dest(`./release/${name}/`))
+})
