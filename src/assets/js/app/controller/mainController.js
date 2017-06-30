@@ -27,6 +27,8 @@ define(['vendor/jquery', 'vendor/pace', 'vendor/mousetrap', 'app/util/util', 'ap
 			restartOnRequestAfter: false,
 		});
 		pace.stop();
+
+		$.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
 	}
 
 	function onAppStart() {
