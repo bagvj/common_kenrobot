@@ -137,4 +137,36 @@
             }
         }
     }
+
+    .top-message {
+        display: none;
+        z-index: 999;
+        position: absolute;
+        height: 40px;
+        top: 0;
+        left: 0;
+        right: 0;
+        line-height: 40px;
+        background-color: rgba(0, 136, 255, 0.9);
+        text-align: center;
+        color: white;
+
+        .x-close {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .message {
+            font-size: 12px;
+
+            i {
+                margin-right: 10px;
+            }
+
+            .link {
+                text-decoration: underline;
+            }
+        }
+    }
 }

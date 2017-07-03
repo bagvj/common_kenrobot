@@ -4,6 +4,7 @@ define(function() {
 		base: {
 			url: {
 				kenrobot: "http://www.kenrobot.com",
+				chrome: "http://www.kenrobot.com/download/chrome/",
 				check: "http://userver.kenrobot.com/sso/userinfo",
 				login: "http://userver.kenrobot.com/sso/login",
 				logout: "http://userver.kenrobot.com/sso/logout",

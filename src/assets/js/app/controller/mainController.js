@@ -9,7 +9,7 @@ define(['vendor/jquery', 'vendor/pace', 'vendor/mousetrap', 'app/util/util', 'ap
 		
 		$(window).on('contextmenu', onContextMenu).on('click', onWindowClick).on('resize', onWindowResize);
 
-		iframe = window.frames["content-frame"];
+		iframe = document.getElementById("content-frame");
 
 		emitor.on("app", "start", onAppStart);
 		kenrobot.on("util", "message", onUtilMessage)

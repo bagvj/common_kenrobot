@@ -1,4 +1,4 @@
-define(['vendor/jquery', 'app/util/util', 'app/config/config', '../model/userModel'], function($1, util, config, userModel) {
+define(['vendor/jquery', 'vendor/ua-parser', 'app/util/util', 'app/util/emitor', 'app/config/config', '../model/userModel'], function($1, UAParser, util, emitor, config, userModel) {
 	var region;
 
 	function init() {
@@ -7,6 +7,27 @@ define(['vendor/jquery', 'app/util/util', 'app/config/config', '../model/userMod
 			.on('click', '.login-region .login-menu > ul > li', onLoginMenuClick);
 		
 		kenrobot.on("user", "update", onUserUpdate);
+		emitor.on("app", "start", onAppStart);
+	}
+
+	function onAppStart() {
+		var message = region.find(".top-message");
+
+		var ua = UAParser();
+		var isChrome = /Chrome|Chromium/.test(ua.browser.name);
+		var isWindows = /Windows/.test(ua.os.name);
+		var isMac = /Mac\sOS/.test(ua.os.name);
+		var is64 = /64/.test(ua.cpu.architecture);
+
+		if(isChrome) {
+			message.remove();
+		} else {
+			var name = isWindows ? `ChromeStandaloneSetup${is64 ? "64" : ""}.exe` : (isMac ? "googlechrome.dmg" : "google-chrome-stable_current_amd64.deb");
+			message.find(".link").attr("href", config.url.chrome + name);
+			message.on("click", ".x-close", _ => {
+				message.remove();
+			}).fadeIn(300);
+		}
 	}
 
 	function onLoginClick(e) {
