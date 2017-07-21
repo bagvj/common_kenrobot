@@ -84,7 +84,7 @@ gulp.task('transform-js', ['clean-temp-js'], callback => {
 		return
 	}
 
-	return gulp.src([ASSETS_SRC + 'js/**/*.js', '!' + ASSETS_SRC + 'js/require.js', '!' + ASSETS_SRC + 'js/vendor/**/*'])
+	return gulp.src([ASSETS_SRC + 'js/**/*.js', '!' + ASSETS_SRC + 'js/require.js', '!' + ASSETS_SRC + 'js/es6-shim.js', '!' + ASSETS_SRC + 'js/vendor/**/*'])
 		.pipe(babel({
 			presets: ['es2015']
 		}))
@@ -103,7 +103,7 @@ gulp.task('copy-vendor-js', ['clean-temp-js'], callback => {
 
 gulp.task('pack-js', ['clean-js', 'transform-js', 'copy-vendor-js'], _ => {
 	if(args.release) {
-		gulp.src([ASSETS_SRC + 'js/require.js'])
+		gulp.src([ASSETS_SRC + 'js/require.js', ASSETS_SRC + 'js/es6-shim.js'])
 			.pipe(gulp.dest(ASSETS_DIST + 'js/'))
 	
 		return gulp.src(TEMP + 'js/*.js')
