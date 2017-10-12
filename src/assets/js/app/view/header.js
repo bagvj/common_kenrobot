@@ -4,8 +4,10 @@ define(['vendor/jquery', 'vendor/ua-parser', 'app/util/util', 'app/util/emitor',
 	function init() {
 		region = $('.header-region')
 			.on('click', '.login-region .placeholder', onLoginClick)
+			// 注册
+			.on('click', '.login-region .nav-btn-register', onRegisterClick)
 			.on('click', '.login-region .login-menu > ul > li', onLoginMenuClick);
-		
+
 		kenrobot.on("user", "update", onUserUpdate);
 		emitor.on("app", "start", onAppStart);
 	}
@@ -37,6 +39,15 @@ define(['vendor/jquery', 'vendor/ua-parser', 'app/util/util', 'app/util/emitor',
 		}
 
 		kenrobot.trigger("login", "show");
+	}
+
+	function onRegisterClick(e) {
+		var wrap = $(this).parent();
+		if(wrap.hasClass("login")) {
+			return;
+		}
+
+		kenrobot.trigger("login", "show", {type: "register"});
 	}
 
 	function onLoginMenuClick(e) {

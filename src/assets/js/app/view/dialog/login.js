@@ -47,7 +47,7 @@ define(['vendor/jquery', 'app/util/util', 'app/config/config', '../../model/user
 
 		refreshWeixinQrcode();
 
-		switchTab("login", false, false);
+		switchTab(args.type || "login", false, false);
 
 		util.dialog({
 			selector: dialogWin,

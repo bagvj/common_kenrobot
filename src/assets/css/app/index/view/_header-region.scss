@@ -1,16 +1,24 @@
 .header-region {
-    height: 60px;
+    height: 70px;
     display: flex;
 
     .logo {
         margin-left: 30px;
         float: left;
-        height: 60px;
+        height: 70px;
         display: inline-block;
 
         img {
-            margin-top: 14px;
-            height: 40px;
+            // 注释部分为修改之前代码
+            // margin-top: 14px;
+            // height: 50px;
+            margin-top: 8px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 130px;
+            height: 55px;
+            display: block;
+            float: left;
         }
     }
 
@@ -24,20 +32,34 @@
 
         li {
             float: left;
-            height: 60px;
+            height: 70px;
 
             a {
-                padding: 0 10px;
-                display: block;
-                line-height: 60px;
-                color: #767676;
-                letter-spacing: 1px;
+                // 注释部分为修改之前代码
+                // padding: 0 10px;
+                // display: block;
+                // line-height: 70px;
+                // color: #767676;
+                // letter-spacing: 1px;
+                // margin-left: 24px;
+                // margin-right: 24px;
+                // -webkit-transition: color 0.5s;
+                // transition: color 0.5s;
+                // text-decoration: none;
+                // font-size: 13px;
                 margin-left: 24px;
                 margin-right: 24px;
-                -webkit-transition: color 0.5s;
-                transition: color 0.5s;
+                transition: color .5s;
                 text-decoration: none;
+                display: block;
+                float: left;
+                font-family: MicrosoftYaHei;
                 font-size: 13px;
+                color: #2a201d;
+                letter-spacing: 1px;
+                line-height: 70px;
+                text-align: center;
+                cursor: pointer;
 
                 &:hover {
                     color: #197cd9;
@@ -47,14 +69,14 @@
     }
 
     .login-region {
-        height: 60px;
+        height: 70px;
         color: #666;
         position: relative;
         margin-right: 30px;
 
         .wrap {
-            height: 60px;
-            
+            height: 70px;
+
             &.login:hover {
                 .login-menu {
                     display: block;
@@ -62,10 +84,31 @@
             }
 
             .placeholder {
-                cursor: pointer;
-                height: 60px;
-                padding-top: 12px;
-                padding-bottom: 12px;
+                float: right;
+                // 注释部分为修改之前代码
+                // cursor: pointer;
+                // height: 70px;
+                // padding-top: 17px;
+                // padding-bottom: 17px;
+
+                .nav-btn-login {
+                    display: block;
+                    margin-top: 23px;
+                    margin-left: 20px;
+                    font-family: MicrosoftYaHei;
+                    font-size: 13px;
+                    color: #2a201d;
+                    letter-spacing: 1px;
+                    line-height: 28px;
+                    text-align: center;
+                    float: left;
+                    cursor: pointer;
+                    width: 66px;
+                    height: 28px;
+                    opacity: 0.9;
+                    border: 1px solid #231815;
+                    border-radius: 3px;
+                }
 
                 .photo {
                     display: inline-block;
@@ -80,7 +123,7 @@
                     padding-right: 18px;
                     line-height: 36px;
                     position: relative;
-                
+
                     &:after {
                         content: '';
                         position: absolute;
@@ -92,10 +135,27 @@
                 }
             }
 
+            .nav-btn-register {
+                float: right;
+                display: block;
+                margin-top: 23px;
+                margin-left: 20px;
+                font-family: MicrosoftYaHei;
+                font-size: 13px;
+                color: #2a201d;
+                letter-spacing: 1px;
+                line-height: 28px;
+                text-align: center;
+                float: left;
+                cursor: pointer;
+                width: 66px;
+                height: 28px;
+            }
+
             .login-menu {
                 display: none;
                 position: absolute;
-                top: 60px;
+                top: 70px;
                 right: 0;
                 z-index: 9;
 
@@ -114,7 +174,7 @@
                         position: absolute;
                         border: 3px solid transparent;
                         border-top-color: white;
-                    }           
+                    }
 
                     li {
                         text-align: center;

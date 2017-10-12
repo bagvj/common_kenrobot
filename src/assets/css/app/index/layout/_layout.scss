@@ -22,18 +22,26 @@ html, body {
 	bottom: 0;
 
 	.header-region {
+		// 注释为修改之前
+		// position: absolute;
+		// left: 0;
+		// right: 0;
+		// top: 0;
+		// height: 70px;
 		position: absolute;
-		left: 0;
+		left: 50%;
 		right: 0;
 		top: 0;
-		height: 60px;
+		height: 70px;
+		width: 1180px;
+		transform: translateX(-50%);
 	}
 
 	.content-region {
 		position: absolute;
 		left: 0;
 		right: 0;
-		top: 60px;
+		top: 70px;
 		bottom: 0;
 	}
 }
