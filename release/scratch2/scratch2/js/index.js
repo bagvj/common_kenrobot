@@ -1,1 +1,454 @@
-"use strict";!function(){function e(e){r()}function t(e){a()}function o(){return O.classList.add("loaded"),setTimeout(function(e){O.querySelector(".loader").remove()},1e3),!0}function n(e,t){"scratch2"==t&&r(e)}function r(e){kenrobot.postMessage("app:projectNewOpen","scratch2",e).then(function(e){w=e.extra,v.loadProject(e.data),w.name&&v.setProjectName(w.name),kenrobot.getUserInfo(),kenrobot.trigger("util","message","打开成功")},function(e){kenrobot.trigger("util","message",{text:"打开失败",type:"error"})})}function a(e){var t=function(t){w.path?v.exportProject(e):e||!w.name?kenrobot.trigger("prompt","show",{title:"项目保存",placeholder:"项目名字",callback:function(t){t?(w.name=t,v.setProjectName(w.name),v.exportProject(e)):kenrobot.trigger("util","message",{text:"保存失败",type:"error"})}}):(w.name&&v.setProjectName(w.name),v.exportProject(e))};kenrobot.getUserInfo()||e||w.hasShowSave?t():(w.hasShowSave=!0,kenrobot.trigger("save","show",t))}function c(e,t){(t?kenrobot.postMessage("app:projectNewSaveAs",w.name,"scratch2",e):kenrobot.postMessage("app:projectNewSave",w.name,"scratch2",e,w.path)).then(function(e){(w=Object.assign(w,e)).name&&v.setProjectName(w.name),kenrobot.trigger("util","message","保存成功")},function(e){kenrobot.trigger("util","message",{text:"保存失败",type:"error"})})}function u(){var e=[{key:["ctrl+n","command+n"],callback:function(e){return s("new-project")}},{key:["ctrl+o","command+o"],callback:function(e){return s("open-project")}},{key:["ctrl+s","command+s"],callback:function(e){return s("save-project")}},{key:["ctrl+shift+s","command+shift+s"],callback:function(e){return s("save-as-project")}}];kenrobot.delayTrigger(100,"shortcut","register",e)}function s(e){switch(e){case"new-project":w={},v.newProject();break;case"open-project":r(arguments.length<=1?void 0:arguments[1]);break;case"save-project":a();break;case"save-as-project":a(!0);break;case"undelete":v.undelete();break;case"toggle-samll-stage":v.toggleSmallStage();break;case"toggle-turbo-mode":v.toggleTurboMode();break;case"edit-block-colors":v.editBlockColors()}}function i(e,t){if(N[t]){for(var o=arguments.length,n=Array(o>2?o-2:0),r=2;r<o;r++)n[r-2]=arguments[r];var a=N[t].concat(Array.from(n).map(function(e){return void 0!==j[e]?j[e]:e}));l.apply(this,a)}}function d(){kenrobot.trigger("serial","open")}function l(e){for(var t=arguments.length,o=Array(t>1?t-1:0),n=1;n<t;n++)o[n-1]=arguments[n];kenrobot.trigger("serial","sendPackage",[255,85,o.length+2,0,e].concat(o))}function k(e){D=e,v.onSerialPortReady()}function g(e,t){D&&D==e&&f(t)}function _(e){D&&D==e&&(D=null,kenrobot.trigger("util","message",{text:"串口已断开",type:"error"}),v.onSerialPortClose())}function f(e){L.length>30&&(L=[]);for(var t=0;t<e.length;t++)if(L.push(e[t]),!(L.length<2)&&(85==L[L.length-1]&&255==L[L.length-2]&&(P=!0,C=L.length-2),13==L[L.length-1]&&P)){P=!1;var o=C+4,n=L[o],r=L[++o];o++;var a;switch(r){case 1:a=L[o],o++;break;case 2:a=p(L,o),o+=4;break;case 3:a=T(L,o),o+=2;break;case 4:var c=L[o];a=h(L,++o,c),o+=c;break;case 5:a=E(L,o),o+=4;break;case 6:a=m(L,o),o+=4}U(n,r,a),L=[]}}function U(e,t,o){t>6||t<0?v.responseValue():e==y.TUDOU_IR?(o=o>0?o:65536+o,v.responseValue(o)):v.responseValue(o)}function b(e){var t=new DataView(new ArrayBuffer(e.length));return e.forEach(function(e,o){return t.setUint8(o,e)}),t}function p(e,t){return b(e.slice(t,t+4)).getFloat32(0,!0)}function E(e,t){return p(e,t)}function m(e,t){return b(e.slice(t,t+4)).getInt32(0,!0)}function T(e,t){return b(e.slice(t,t+2)).getInt16(0,!0)}function h(e,t,o){return e.slice(t,t+o).map(function(e){return String.fromCharCode(e)}).join("")}var O,v,D,R=function(){function e(e){if(!o&&("onreadystatechange"!==e.type||"complete"===document.readyState)){for(var n=0;n<t.length;n++)t[n].call(document);o=!0,t=null}}var t=[],o=!1;return document.addEventListener?(document.addEventListener("DOMContentLoaded",e,!1),document.addEventListener("readystatechange",e,!1),window.addEventListener("load",e,!1)):document.attachEvent&&(document.attachEvent("onreadystatechange",e),window.attachEvent("onload",e)),function(e){o?e.call(document):t.push(e)}}(),w={},y={TUDOU_MOVE:52,TUDOU_STOP:53,TUDOU_BATTERY:54,TUDOU_OBSTACLE:55,TUDOU_TRACKING:56,TUDOU_LED:57,TUDOU_BUZZER:58,TUDOU_IR:59,TUDOU_SERVO:60,TUDOU_RGBLED:61,KEDOU_MOVE:62,KEDOU_STOP:63,KEDOU_BATTERY:64,KEDOU_OBSTACLE:65,KEDOU_TRACKING:66,KEDOU_VOICE:67},S={GET:1,RUN:2,RESET:4,START:5},j={tudou_forward:1,tudou_back:2,tudou_turnLeft:3,tudou_turnRight:4,tudou_forwardLeft:1,tudou_forwardRight:2,tudou_backLeft:3,tudou_backRight:4,tudou_on:1,tudou_off:0,kedou_forward:1,kedou_back:2,kedou_turnLeft:3,kedou_turnRight:4,kedou_left:1,kedou_center:2,kedou_right:3,kedou_leftEdge:1,kedou_leftCenter:2,kedou_rightCenter:3,kedou_rightEdge:4,kedou_sound_1:1,kedou_sound_2:2,kedou_sound_3:3,kedou_sound_4:4},N={tudou_move:[S.RUN,y.TUDOU_MOVE],tudou_stop:[S.RUN,y.TUDOU_STOP],tudou_battery:[S.GET,y.TUDOU_BATTERY],tudou_obstacle:[S.GET,y.TUDOU_OBSTACLE],tudou_tracking:[S.GET,y.TUDOU_TRACKING],tudou_led:[S.RUN,y.TUDOU_LED],tudou_buzzer:[S.RUN,y.TUDOU_BUZZER],tudou_ir:[S.GET,y.TUDOU_IR],tudou_servo:[S.RUN,y.TUDOU_SERVO],tudou_rgbled:[S.RUN,y.TUDOU_RGBLED],kedou_move:[S.RUN,y.KEDOU_MOVE],kedou_stop:[S.RUN,y.KEDOU_STOP],kedou_battery:[S.GET,y.KEDOU_BATTERY],kedou_obstacle:[S.GET,y.KEDOU_OBSTACLE],kedou_tracking:[S.GET,y.KEDOU_TRACKING],kedou_sound:[S.RUN,y.KEDOU_VOICE]},L=[],P=!1,C=0;R(function(){window.kenrobot=window.kenrobot||top.kenrobot,v=document.getElementById("ken-scratch");var r=(O=document.querySelector(".player")).querySelector(".toolbar");window.JSeditorReady=o,kenrobot&&!kenrobot.isPC||r.remove(),kenrobot&&(kenrobot.isPC||(r.querySelector(".open").addEventListener("click",e),r.querySelector(".save").addEventListener("click",t)),kenrobot.view.callExt=i,kenrobot.view.openSerialPort=d,kenrobot.view.saveProject=c,kenrobot.viewType="scratch2",u(),kenrobot.on("app","command",s).on("project","open-by",n).on("serial","ready",k).on("serial","data",g).on("serial","close",_))})}();
+;(function() {
+	var whenReady = (function() {
+	    var funcs = [];
+	    var ready = false;
+	    
+	    function handler(e) {
+	        if(ready) return;
+	        
+	        if(e.type === 'onreadystatechange' && document.readyState !== 'complete') {
+	            return;
+	        }
+	        
+	        for(var i=0; i<funcs.length; i++) {
+	            funcs[i].call(document);
+	        }
+	        ready = true;
+	        funcs = null;
+	    }
+	    if(document.addEventListener) {
+	        document.addEventListener('DOMContentLoaded', handler, false);
+	        document.addEventListener('readystatechange', handler, false);
+	        window.addEventListener('load', handler, false);
+	    }else if(document.attachEvent) {
+	        document.attachEvent('onreadystatechange', handler);
+	        window.attachEvent('onload', handler);
+	    }
+
+	    return function whenReady(fn) {
+	        if(ready) { fn.call(document); }
+	        else { funcs.push(fn); }
+	    }
+	})();
+
+	var player;
+	var scratch;
+
+	var projectExtra = {};
+
+	function init() {
+		window.kenrobot = window.kenrobot || top.kenrobot;
+		scratch = document.getElementById("ken-scratch");
+		player = document.querySelector(".player");
+		var toolbar = player.querySelector(".toolbar");
+
+		window.JSeditorReady = JSeditorReady;
+
+		if(!kenrobot || kenrobot.isPC) {
+			toolbar.remove();
+		}
+
+		// window.kenrobot = {
+		// 	view: {
+		// 		callExt: callExt,
+		// 		openSerialPort: openSerialPort,
+		// 	},
+		// };
+
+		if(!kenrobot) {
+			return;
+		}
+
+		if(!kenrobot.isPC) {
+			toolbar.querySelector(".open").addEventListener("click", onOpenClick);
+			toolbar.querySelector(".save").addEventListener("click", onSaveClick);
+		}
+		
+		kenrobot.view.callExt = callExt;
+		kenrobot.view.openSerialPort = openSerialPort;
+		kenrobot.view.saveProject = saveProject;
+		kenrobot.viewType = "scratch2";
+
+		registerShortcut();
+		kenrobot.on("app", "command", onCommand)
+			.on("project", "open-by", onProjectOpenBy)
+			.on("serial", "ready", onSerialPortReady)
+			.on("serial", "data", onSerialPortData)
+			.on("serial", "close", onSerialPortClose);
+	}
+
+	function onOpenClick(e) {
+		onOpenProject();
+	}
+
+	function onSaveClick(e) {
+		onSaveProject();
+	}
+
+	function JSeditorReady() {
+		player.classList.add("loaded");
+		setTimeout(_ => {
+			player.querySelector(".loader").remove();
+		}, 1000);
+
+		return true;
+	}
+
+	function onProjectOpenBy(name, type) {
+		if(type != "scratch2") {
+			return
+		}
+
+		onOpenProject(name);
+	}
+
+	function onOpenProject(name) {
+		kenrobot.postMessage("app:projectNewOpen", "scratch2", name).then(result => {
+			projectExtra = result.extra;
+			scratch.loadProject(result.data);
+			projectExtra.name && scratch.setProjectName(projectExtra.name);
+
+			if(kenrobot.getUserInfo()) {
+				kenrobot.trigger("util", "message", "打开成功");
+			} else {
+				kenrobot.trigger("util", "message", "打开成功");
+			}
+		}, err => {
+			kenrobot.trigger("util", "message", {
+				text: "打开失败",
+				type: "error",
+			});
+		});
+	}
+
+	function onSaveProject(saveAs) {
+		var doSave = _ => {
+			if(projectExtra.path) {
+				scratch.exportProject(saveAs);
+			} else if(saveAs || !projectExtra.name) {
+				kenrobot.trigger("prompt", "show", {
+					title: "项目保存",
+					placeholder: "项目名字",
+					callback: name => {
+						if(!name) {
+							kenrobot.trigger("util", "message", {
+								text: "保存失败",
+								type: "error",
+							});
+							return
+						}
+
+						projectExtra.name = name;
+						scratch.setProjectName(projectExtra.name);
+						scratch.exportProject(saveAs);
+					}
+				});
+			} else {
+				projectExtra.name && scratch.setProjectName(projectExtra.name);
+				scratch.exportProject(saveAs);
+			}
+		}
+
+		if(kenrobot.getUserInfo() || saveAs || projectExtra.hasShowSave) {
+			doSave();
+		} else {
+			projectExtra.hasShowSave = true;
+			kenrobot.trigger("save", "show", doSave);
+		}
+	}
+
+	function saveProject(projectData, saveAs) {
+		var promise
+		if(saveAs) {
+			promise = kenrobot.postMessage("app:projectNewSaveAs", projectExtra.name, "scratch2", projectData)
+		} else {
+			promise = kenrobot.postMessage("app:projectNewSave", projectExtra.name, "scratch2", projectData, projectExtra.path)
+		}
+
+		promise.then(result => {
+			projectExtra = Object.assign(projectExtra, result);
+			projectExtra.name && scratch.setProjectName(projectExtra.name);
+
+			kenrobot.trigger("util", "message", "保存成功");
+		}, err => {
+			kenrobot.trigger("util", "message", {
+				text: "保存失败",
+				type: "error",
+			});
+		});
+	}
+
+	function registerShortcut() {
+		var shortcuts = [{
+			key: ["ctrl+n", "command+n"],
+			callback: _ => onCommand("new-project"),
+		}, {
+			key: ["ctrl+o", "command+o"],
+			callback: _ => onCommand("open-project"),
+		}, {
+			key: ["ctrl+s", "command+s"],
+			callback: _ => onCommand("save-project"),
+		}, {
+			key: ["ctrl+shift+s", "command+shift+s"],
+			callback: _ => onCommand("save-as-project"),
+		}];
+
+		kenrobot.delayTrigger(100, "shortcut", "register", shortcuts);
+	}
+
+	function onCommand(command, ...args) {
+		switch (command) {
+			case "new-project":
+				projectExtra = {};
+				scratch.newProject();
+				break;
+			case "open-project":
+				var name = args[0]
+				onOpenProject(name);
+				break;
+			case "save-project":
+				onSaveProject();
+				break;
+			case "save-as-project":
+				onSaveProject(true);
+				break;
+			case "undelete":
+				scratch.undelete();
+				break;
+			case "toggle-samll-stage":
+				scratch.toggleSmallStage();
+				break;
+			case "toggle-turbo-mode":
+				scratch.toggleTurboMode();
+				break;
+			case "edit-block-colors":
+				scratch.editBlockColors();
+				break;
+		}
+	}
+
+	const Device = {
+	    TUDOU_MOVE: 52,
+	    TUDOU_STOP: 53,
+	    TUDOU_BATTERY: 54,
+	    TUDOU_OBSTACLE: 55,
+	    TUDOU_TRACKING: 56,
+	    TUDOU_LED: 57,
+	    TUDOU_BUZZER: 58,
+	    TUDOU_IR: 59,
+	    TUDOU_SERVO: 60,
+	    TUDOU_RGBLED: 61,
+	    
+		KEDOU_MOVE: 62,
+		KEDOU_STOP: 63,
+		KEDOU_BATTERY: 64,
+	 	KEDOU_OBSTACLE: 65,
+	 	KEDOU_TRACKING: 66,
+	 	KEDOU_VOICE: 67,
+	};
+
+	const Action = {
+		GET: 1,
+		RUN: 2,
+		RESET: 4,
+		START: 5,
+	};
+
+	const menuValues = {
+		tudou_forward: 1,
+		tudou_back: 2,
+		tudou_turnLeft: 3,
+		tudou_turnRight: 4,
+
+		tudou_forwardLeft: 1,
+		tudou_forwardRight: 2,
+		tudou_backLeft: 3,
+		tudou_backRight: 4,
+
+		tudou_on: 1,
+		tudou_off: 0,
+
+		kedou_forward: 1,
+		kedou_back: 2,
+		kedou_turnLeft: 3,
+		kedou_turnRight: 4,
+
+		kedou_left: 1,
+		kedou_center: 2,
+		kedou_right: 3,
+
+		kedou_leftEdge: 1,
+		kedou_leftCenter: 2,
+		kedou_rightCenter: 3,
+		kedou_rightEdge: 4,
+
+		kedou_sound_1: 1,
+		kedou_sound_2: 2,
+		kedou_sound_3: 3,
+		kedou_sound_4: 4,
+	};
+
+	const actionValues = {
+		tudou_move: [Action.RUN, Device.TUDOU_MOVE],
+		tudou_stop: [Action.RUN, Device.TUDOU_STOP],
+		tudou_battery: [Action.GET, Device.TUDOU_BATTERY],
+		tudou_obstacle: [Action.GET, Device.TUDOU_OBSTACLE],
+		tudou_tracking: [Action.GET, Device.TUDOU_TRACKING],
+		tudou_led: [Action.RUN, Device.TUDOU_LED],
+		tudou_buzzer: [Action.RUN, Device.TUDOU_BUZZER],
+		tudou_ir: [Action.GET, Device.TUDOU_IR],
+		tudou_servo: [Action.RUN, Device.TUDOU_SERVO],
+		tudou_rgbled: [Action.RUN, Device.TUDOU_RGBLED],
+
+		kedou_move: [Action.RUN, Device.KEDOU_MOVE],
+		kedou_stop: [Action.RUN, Device.KEDOU_STOP],
+		kedou_battery: [Action.GET, Device.KEDOU_BATTERY],
+		kedou_obstacle: [Action.GET, Device.KEDOU_OBSTACLE],
+		kedou_tracking: [Action.GET, Device.KEDOU_TRACKING],
+		kedou_sound: [Action.RUN, Device.KEDOU_VOICE],
+	};
+
+	function callExt(ext, operation, ...args) {
+		if(!actionValues[operation]) {
+			// console.log(`unknow operation: ${operation}`);
+			return;
+		}
+
+		var param = actionValues[operation].concat(Array.from(args).map(value => menuValues[value] !== undefined ? menuValues[value] : value));
+		sendPackage.apply(this, param);
+	}
+
+	function openSerialPort() {
+		kenrobot.trigger("serial", "open");
+	}
+
+	function sendPackage(action, ...args) {
+		kenrobot.trigger("serial", "sendPackage", [0xff, 0x55, args.length + 2, 0, action].concat(args));
+	}
+
+	var lastPortId;
+	function onSerialPortReady(portId) {
+		lastPortId = portId;
+		scratch.onSerialPortReady();
+	}
+
+	function onSerialPortData(portId, data) {
+		lastPortId && lastPortId == portId && processData(data);
+	}
+
+	function onSerialPortClose(portId) {
+		if(lastPortId && lastPortId == portId) {
+			lastPortId = null;
+			kenrobot.trigger("util", "message", {
+				text: "串口已断开",
+				type: "error",
+			});
+			scratch.onSerialPortClose();
+		}
+	}
+
+	var receiveBuffer = [];
+	var isParseStart = false;
+	var parseIndex = 0;
+
+	function processData(bytes) {
+		if (receiveBuffer.length > 30) {
+			receiveBuffer = [];
+		}
+
+		for (var index = 0; index < bytes.length; index++) {
+			receiveBuffer.push(bytes[index])
+
+			if (receiveBuffer.length < 2) {
+				continue
+			}
+
+			if (receiveBuffer[receiveBuffer.length - 1] == 0x55 && receiveBuffer[receiveBuffer.length - 2] == 0xff) {
+				isParseStart = true;
+				parseIndex = receiveBuffer.length - 2;
+			}
+
+			if (receiveBuffer[receiveBuffer.length - 1] == 0xd && isParseStart) {
+				isParseStart = false;
+
+				var pos = parseIndex + 4;
+				var device = receiveBuffer[pos];
+				pos++;
+				var type = receiveBuffer[pos];
+				pos++;
+				//1 byte 2 float 3 short 4 len+string 5 double
+				var value;
+				switch (type) {
+					case 1:
+						value = receiveBuffer[pos];
+						pos++;
+						break;
+					case 2:
+						value = readFloat(receiveBuffer, pos);
+						pos += 4;
+						break;
+					case 3:
+						value = readShort(receiveBuffer, pos);
+						pos += 2;
+						break;
+					case 4:
+						var len = receiveBuffer[pos];
+						pos++;
+						value = readString(receiveBuffer, pos, len);
+						pos+= len;
+						break;
+					case 5:
+						value = readDouble(receiveBuffer, pos);
+						pos += 4;
+						break;
+					case 6:
+						value = readInt(receiveBuffer, pos);
+						pos += 4;
+						break;
+				}
+				onPackageReceive(device, type, value);
+
+				receiveBuffer = [];
+			}
+		}
+	}
+
+	function onPackageReceive(device, type, value) {
+		if(type > 6 || type < 0) {
+			scratch.responseValue();
+		} else if(device == Device.TUDOU_IR) {
+			value = value > 0 ? value : 0x10000 + value
+			scratch.responseValue(value);
+		} else {
+			scratch.responseValue(value);
+		}
+	}
+
+	function castDataView(bytes) {
+		var dataView = new DataView(new ArrayBuffer(bytes.length))
+		bytes.forEach((value, i) => dataView.setUint8(i, value))
+		return dataView
+	}
+
+	function readFloat(arr, pos) {
+	    return castDataView(arr.slice(pos, pos + 4)).getFloat32(0, true)
+	}
+
+	function readDouble(arr, pos) {
+		return readFloat(arr, pos)
+	}
+
+	function readInt(arr, pos) {
+		return castDataView(arr.slice(pos, pos + 4)).getInt32(0, true)
+	}
+
+	function readShort(arr, pos) {
+		return castDataView(arr.slice(pos, pos + 2)).getInt16(0, true)
+	}
+
+	function readString(arr, pos, len) {
+	    return arr.slice(pos, pos + len).map(value => String.fromCharCode(value)).join('')
+	}
+
+	whenReady(init);
+})();
