@@ -48,7 +48,7 @@ define(['vendor/jquery', 'app/config/config'], function($1, config) {
 
 		$.ajax({
 			type: "POST",
-			url: config.url.login,
+			url: config.url.LOGIN,
 			data: data,
 		}).then(result => {
 			if(result.status == 0) {
@@ -69,7 +69,7 @@ define(['vendor/jquery', 'app/config/config'], function($1, config) {
 
 		$.ajax({
 			type: "GET",
-			url: config.url.logout,
+			url: config.url.LOGOUT,
 		}).then(_ => {
 			promise.resolve();
 		}, err => {
@@ -84,7 +84,7 @@ define(['vendor/jquery', 'app/config/config'], function($1, config) {
 
 		$.ajax({
 			type: "POST",
-			url: config.url.login,
+			url: config.url.WEIXIN_LOGIN,
 			data: {
 				source: "weixin",
 				login_key : key,
@@ -104,7 +104,7 @@ define(['vendor/jquery', 'app/config/config'], function($1, config) {
 
 		$.ajax({
 			type: "GET",
-			url: config.url.loginQrcode,
+			url: config.url.WEIXIN_QRCODE,
 		}).then(result => {
 			promise.resolve(result);
 		}, err => {
@@ -119,7 +119,7 @@ define(['vendor/jquery', 'app/config/config'], function($1, config) {
 
 		$.ajax({
 			type: "POST",
-			url: config.url.register,
+			url: config.url.REGISTER,
 			data: {
 				email: fields.email,
 				username: fields.username,
@@ -141,7 +141,7 @@ define(['vendor/jquery', 'app/config/config'], function($1, config) {
 
 		$.ajax({
 			type: "POST",
-			url: config.url.findPassword,
+			url: config.url.FIND_PASSWORD,
 			data: {
 				email: email,
 			},

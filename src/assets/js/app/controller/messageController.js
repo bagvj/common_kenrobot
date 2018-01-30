@@ -23,21 +23,21 @@ define(['vendor/jquery', 'vendor/download', 'app/util/cast', 'app/model/projectM
 	}
 
 	function onProjectNewSave(name, type, data, savePath) {
-		if(!kenrobot.getUserInfo()) {
+		// if(!kenrobot.getUserInfo()) {
 			return onProjectNewSaveAs(name, type, data);
-		}
+		// }
 
-		var promise = $.Deferred();
-		projectModel.upload(name, type, data).then(_ => {
-			promise.resolve({
-				name: name,
-				type: type,
-			});
-		}, err => {
-			promise.reject(err);
-		});
+		// var promise = $.Deferred();
+		// projectModel.upload(name, type, data).then(_ => {
+		// 	promise.resolve({
+		// 		name: name,
+		// 		type: type,
+		// 	});
+		// }, err => {
+		// 	promise.reject(err);
+		// });
 
-		return promise;
+		// return promise;
 	}
 
 	function onProjectNewSaveAs(name, type, data, savePath) {
@@ -60,7 +60,7 @@ define(['vendor/jquery', 'vendor/download', 'app/util/cast', 'app/model/projectM
 				promise.reject(err);
 			});
 		}
-		
+
 		return promise;
 	}
 
